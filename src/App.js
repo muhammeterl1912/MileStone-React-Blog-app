@@ -8,14 +8,14 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#90caf9",
+        main: "#1976D2",
       },
       secondary: {
-        main: "#ffcc80",
+        main: "#00897B",
       },
       background: {
-        default: "#e3f2fd",
-        paper: "#ffffff",
+        default: "#ECEFF1",
+        paper: "#FFFFFF",
       },
       text: {
         primary: "#212121",
@@ -23,6 +23,7 @@ function App() {
       },
     },
   });
+
   return (
     <>
       <ThemeProvider theme={theme}>

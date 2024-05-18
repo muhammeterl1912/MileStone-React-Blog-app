@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import useAuthCalls from "../hooks/useAuthCalls";
+import { loginUser } from "../hooks/authCalls";
 
 const initialState = {
   user: "",
@@ -7,8 +7,6 @@ const initialState = {
   loading: false,
   error: false,
 };
-
-const { loginUser } = useAuthCalls(); 
 
 const authSlice = createSlice({
   name: "auth",
@@ -31,5 +29,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { /* actions */ } = authSlice.actions;
+export const {
+  /* actions */
+} = authSlice.actions;
 export default authSlice.reducer;
