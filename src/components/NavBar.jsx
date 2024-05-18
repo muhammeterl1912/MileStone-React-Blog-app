@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalAirportIcon from "@mui/icons-material/LocalAirport";
+import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 
 const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
@@ -39,7 +40,7 @@ function NavBar() {
     <AppBar position="static">
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
-          <LocalAirportIcon
+          <EmojiEventsRoundedIcon
             sx={{
               display: { xs: "none", md: "flex" },
               mr: 1,
@@ -100,7 +101,7 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          <LocalAirportIcon
+          <EmojiEventsRoundedIcon
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
           />
           <Typography
