@@ -15,7 +15,7 @@ const Login = () => {
         direction="row-reverse"
         alignItems="center"
         sx={{
-          height: "90vh",
+          height: "80vh",
           p: 2,
         }}
       >

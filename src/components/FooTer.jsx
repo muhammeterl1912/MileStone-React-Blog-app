@@ -6,9 +6,10 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Box sx={{ display:"fixed",marginBottom:"0"}}>
-      <AppBar position="static" color="primary">
-        <Toolbar sx={{  display:"flex", justifyContent: "space-between", flexWrap: 'wrap' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', }}>
+      <Box sx={{ flexGrow: 1 }}></Box>
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
           <Box>
             <IconButton 
               size="small"
@@ -30,7 +31,7 @@ function Footer() {
             textAlign="center" 
             sx={{ 
               color: 'white',
-              display: "flex",
+              display: 'flex',
               alignItems: 'center'
             }}
           >

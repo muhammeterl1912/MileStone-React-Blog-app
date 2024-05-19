@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
 import { Link } from "react-router-dom";
 
-const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
+const pages = ["DASHBOARD", "NEWBLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
 
 function NavBar() {

@@ -6,6 +6,9 @@ import FooTer from "../FooTer";
 import Dashboard from "../pages/Dashboard";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
+import Profile from "../pages/Profile";
+import PrivateRouter from "./PrivateRouter";
+import UpdateModal from "../blog/UpdateModal";
 const AppRouter = () => {
   return (
     <Router>
@@ -22,7 +25,9 @@ const AppRouter = () => {
         <Route path="/profile" element={<PrivateRouter />}>
           <Route path="" element={<Profile />} />
         </Route>
-
+        <Route path="/updateblog/:id" element={<PrivateRouter />}>
+          <Route path="" element={<UpdateModal />} />
+        </Route>
       
       </Routes>
       <FooTer />
