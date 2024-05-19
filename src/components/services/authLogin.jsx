@@ -10,7 +10,7 @@ export const loginUser = createAsyncThunk(
       toastSuccessNotify("Successfully Logged-In");
       return data;
     } catch (error) {
-      toastErrorNotify(error.message);
+      toastErrorNotify("Wrong Password...");
       return thunkAPI.rejectWithValue(error.message);
     }
   }

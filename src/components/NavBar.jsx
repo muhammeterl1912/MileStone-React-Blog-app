@@ -8,10 +8,10 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
+import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
+import { Link } from "react-router-dom";
 
 const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
@@ -95,7 +95,14 @@ function NavBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">
+                    <Link
+                      to={"/" + page.toLowerCase()}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      {page}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -123,20 +130,16 @@ function NavBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  "&:hover": {
-                    color: "black",
-                  },
-                }}
-              >
-                {page}
-              </Button>
+              <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link
+                    to={"/" + page.toLowerCase()}
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    {page}
+                  </Link>
+                </Typography>
+              </MenuItem>
             ))}
           </Box>
 

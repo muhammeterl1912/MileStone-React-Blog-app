@@ -7,12 +7,12 @@ export const logOutUser = createAsyncThunk(
   async (_, navigate) => {
     const { axiosToken } = useAxios();
     try {
-      await axiosToken("/auth/logout");
+      await axiosToken("/auth/logout/");
 
       toastSuccessNotify("User Successfully Logged-out.");
       navigate("/");
     } catch (error) {
-      toastErrorNotify(error.message);
+      toastErrorNotify("User registration failed...");
     }
   }
 );
