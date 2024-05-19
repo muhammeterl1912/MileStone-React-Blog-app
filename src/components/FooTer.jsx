@@ -6,7 +6,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ display:"fixed",marginBottom:"0"}}>
       <AppBar position="static" color="primary">
         <Toolbar sx={{  display:"flex", justifyContent: "space-between", flexWrap: 'wrap' }}>
           <Box>

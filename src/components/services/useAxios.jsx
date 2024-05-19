@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const useAxiosInstance = () => {
+const useAxios = () => {
   const { token } = useSelector((state) => state.auth);
 
   const axiosToken = axios.create({
@@ -17,4 +17,4 @@ const useAxiosInstance = () => {
   return { axiosToken, axiosPublic };
 };
 
-export default useAxiosInstance;
+export default useAxios;

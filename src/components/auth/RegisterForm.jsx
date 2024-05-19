@@ -7,8 +7,15 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Formik, Form } from "formik";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../services/authRegister";
+import { useNavigate } from "react-router-dom";
+import useAxios from "../services/useAxios";
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { axiosPublic } = useAxios();
   const registerSchema = object({
     username: string().required("Username is required field."),
     password: string()
@@ -46,6 +53,9 @@ const RegisterForm = () => {
         }}
         validationSchema={registerSchema}
         onSubmit={(values, actions) => {
+          dispatch(
+            registerUser({ registerData: values, navigate, axiosPublic })
+          );
           actions.resetForm();
           actions.setSubmitting(false);
         }}
@@ -145,7 +155,7 @@ const RegisterForm = () => {
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   ),
                 }}

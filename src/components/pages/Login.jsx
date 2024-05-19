@@ -15,7 +15,7 @@ const Login = () => {
         direction="row-reverse"
         alignItems="center"
         sx={{
-          height: "95vh",
+          height: "90vh",
           p: 2,
         }}
       >
@@ -28,7 +28,7 @@ const Login = () => {
               height: 40,
             }}
           >
-            <LockIcon size="30" />
+            <LockIcon size="30"/>
           </Avatar>
           <Typography
             variant="h4"

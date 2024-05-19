@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import LocalAirportIcon from "@mui/icons-material/LocalAirport";
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 
 const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
