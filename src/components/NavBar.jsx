@@ -12,13 +12,20 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logOutUser } from "./services/authLogout";
+import { useNavigate } from "react-router-dom";
+import useAxios from "./services/useAxios";
 const pages = ["DASHBOARD", "NEWBLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { axiosToken } = useAxios();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -165,11 +172,32 @@ function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {user ? (
+                settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={
+                      setting === "Log-out"
+                        ? () => {
+                            dispatch(logOutUser({ axiosToken, navigate }));
+                            handleCloseUserMenu();
+                          }
+                        : handleCloseUserMenu
+                    }
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem
+                  onClick={() => {
+                    navigate("/login");
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Typography textAlign="center">Log-in</Typography>
                 </MenuItem>
-              ))}
+              )}
             </Menu>
           </Box>
         </Toolbar>

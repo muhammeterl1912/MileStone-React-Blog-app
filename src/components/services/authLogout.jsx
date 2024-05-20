@@ -1,18 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toastSuccessNotify, toastErrorNotify } from "../helper/ToastNotify";
-import useAxios from "./useAxios";
 
 export const logOutUser = createAsyncThunk(
   "auth/logOut",
-  async (_, navigate) => {
-    const { axiosToken } = useAxios();
+  async ({axiosToken, navigate},thunkAPI) => {
     try {
       await axiosToken("/auth/logout/");
 
       toastSuccessNotify("User Successfully Logged-out.");
       navigate("/");
     } catch (error) {
-      toastErrorNotify("User registration failed...");
+      toastErrorNotify("User could not be Logged-out...")
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
