@@ -11,11 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "./services/authLogout";
-import { useNavigate } from "react-router-dom";
 import useAxios from "./services/useAxios";
+
 const pages = ["DASHBOARD", "NEWBLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
 
@@ -30,6 +30,7 @@ function NavBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -104,7 +105,7 @@ function NavBar() {
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
                     <Link
-                      to={"/" + page.toLowerCase()}
+                      to={page === "DASHBOARD" ? "/" : "/" + page.toLowerCase()}
                       style={{ color: "black", textDecoration: "none" }}
                     >
                       {page}
@@ -140,7 +141,7 @@ function NavBar() {
               <MenuItem key={page} onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link
-                    to={"/" + page.toLowerCase()}
+                    to={page === "DASHBOARD" ? "/" : "/" + page.toLowerCase()}
                     style={{ color: "white", textDecoration: "none" }}
                   >
                     {page}
@@ -205,4 +206,5 @@ function NavBar() {
     </AppBar>
   );
 }
+
 export default NavBar;

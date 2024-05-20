@@ -1,35 +1,36 @@
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, IconButton, Box } from "@mui/material";
 import { Formik, Form } from "formik";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import Box from "@mui/material/Box";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { loginUser } from "../services/authLogin";
 import useAxios from "../services/useAxios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { object, string } from "yup";
+
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { axiosPublic } = useAxios();
+
   const loginSchema = object({
     username: string().required("Username is a required field"),
     password: string()
       .required("Password is a required field")
       .min(8, "Password must be at least 8 characters long")
-      .max(16, "Password must be the most 16 characters long")
+      .max(16, "Password must be at most 16 characters long")
       .matches(/\d+/, "Password must contain at least one number.")
       .matches(/[a-z]+/, "Password must contain at least one lowercase letter.")
       .matches(/[A-Z]+/, "Password must contain at least one uppercase letter.")
       .matches(
         /[@$!%*?&]+/,
-        "The password must contain at least one special character (@$!%?&)."
+        "Password must contain at least one special character (@$!%*?&)."
       ),
   });
+
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -82,7 +83,7 @@ const LoginForm = () => {
                   endAdornment: (
                     <IconButton
                       onClick={handleTogglePasswordVisibility}
-                      edge="end "
+                      edge="end"
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>

@@ -21,7 +21,7 @@ const blogsSlice = createSlice({
         state.loading = false;
         state.blogs = payload;
         state.error = false;
-         console.log("first", payload);
+  
       })
       .addCase(getBlogState.rejected, (state) => {
         state.loading = false;

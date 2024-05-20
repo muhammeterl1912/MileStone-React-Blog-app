@@ -4,9 +4,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getBlogState = createAsyncThunk(
   "blogsGet",
-  async ({axiosToken,endPoint}, thunkAPI) => {
+  async ({axiosToken,endPoint,pages}, thunkAPI) => {
     try {
-      const { data } = await axiosToken(endPoint);
+      const { data } = await axiosToken(endPoint+pages);
       return data.data;
     } catch (error) {
 
