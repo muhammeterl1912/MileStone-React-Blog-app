@@ -9,6 +9,7 @@ import Detail from "../pages/Detail";
 import Profile from "../pages/Profile";
 import PrivateRouter from "./PrivateRouter";
 import UpdateModal from "../blog/UpdateModal";
+import NewBlog from "../pages/NewBlog";
 const AppRouter = () => {
   return (
     <Router>
@@ -28,7 +29,9 @@ const AppRouter = () => {
         <Route path="/updateblog/:id" element={<PrivateRouter />}>
           <Route path="" element={<UpdateModal />} />
         </Route>
-      
+        <Route path="/newblog" element={<PrivateRouter />}>
+          <Route path="" element={<NewBlog/>} />
+        </Route>
       </Routes>
       <FooTer />
     </Router>
