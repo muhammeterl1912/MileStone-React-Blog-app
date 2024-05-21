@@ -16,10 +16,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toastWarnNotify } from "../helper/ToastNotify";
 
-const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
-  const { user } = useSelector((state) => state.auth);
+const BlogList = ({ blogs, totalPage, currentPage }) => {
+  const { user } = useSelector((state) => state.auth)
+
   const navigate = useNavigate();
-  const pageSize = 4;
+
 
   const extractFirstParagraph = (text) => {
     const words = text.split(" ");
@@ -27,14 +28,12 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
   };
 
   const handlePageChange = (event, value) => {
-    setCurrentPage(value);
+  
+    navigate(`/?page=${value}`)
+    
   };
 
-  const paginatedBlogs = blogs.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
-
+ 
   return (
     <>
       <Grid
@@ -42,7 +41,7 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
         spacing={1}
         sx={{ maxWidth: "1800px", justifyContent: "center" }}
       >
-        {paginatedBlogs.map((blog) => (
+        {blogs.map((blog) => (
           <Grid item key={blog.id} xs={12} md={6} xl={3}>
             <Card
               sx={{
@@ -101,10 +100,12 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={2} sx={{ marginTop: "60px" }}>
+    {
+      totalPage > 1 &&(
+        <Stack spacing={2} sx={{ marginTop: "60px" }}>
         <Pagination
-          count={Math.ceil(blogs.length / pageSize)}
-          page={currentPage}  
+          count={+totalPage}
+          page={+currentPage}  
           onChange={handlePageChange}
           color="primary"
           sx={{
@@ -113,6 +114,8 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
           }}
         />
       </Stack>
+      )
+    }
     </>
   );
 };

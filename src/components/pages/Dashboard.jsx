@@ -5,18 +5,22 @@ import { getBlogState } from "../services/BlogCalls";
 import useAxios from "../services/useAxios";
 import { useSelector } from "react-redux";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
+import { useLocation } from "react-router-dom";
 const Dashboard = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const params = useLocation()?.search?.split("page=")[1]
+  const [currentPage, setCurrentPage] = useState(params ?? 1);
   const { axiosToken } = useAxios();
   const dispatch = useDispatch();
-  const { blogs, loading } = useSelector((state) => state.blogs);
-
+  const { blogs,totalPage, loading } = useSelector((state) => state.blogs);
+console.log("params",currentPage)
   useEffect(() => {
     dispatch(
-      getBlogState({ axiosToken, endPoint: `blogs?page=${currentPage}` })
+      getBlogState({  currentPage })
     );
   }, [currentPage, dispatch]);
-
+useEffect(()=>{
+  setCurrentPage(params ?? 1)
+},[params])
   return (
     <div>
       {loading ? (
@@ -26,6 +30,7 @@ const Dashboard = () => {
           blogs={blogs}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
+          totalPage={totalPage}
         />
       )}
     </div>

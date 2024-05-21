@@ -7,20 +7,21 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useParams } from "react-router-dom";
 import useAxios from "../services/useAxios";
 import { getBlogState } from "../services/BlogCalls";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
-import { postBlogState } from "../services/BlogCalls";
+import { postBlogState, getBlogStateDetail } from "../services/BlogCalls";
+import CommentCard from "../blog/CommentCard";
 const Detail = () => {
-
   const { id } = useParams();
   const { axiosToken } = useAxios();
+  const [showComment, setShowComment] = useState(false);
   const dispatch = useDispatch();
   const { singleBlog, isLiked } = useSelector((state) => state.blogs);
   console.log(isLiked?.didUserLike);
   useEffect(() => {
-    dispatch(getBlogState({ axiosToken, endPoint: `/blogs/${id}`, id: "" }));
-   }, [id, isLiked,dispatch]);
+    getPostDetail()
+  }, [id]);
 
   const sampleBlog = {
     id: singleBlog?._id,
@@ -41,7 +42,24 @@ const Detail = () => {
     firstName: singleBlog?.userId ? singleBlog?.userId.firstName : "Unknown",
     lastName: singleBlog?.userId ? singleBlog?.userId.lastName : "Unknown",
   };
+  const handleClickLike = () => {
+    dispatch(
+      postBlogState({
+        axiosToken,
+        endPoint: "/blogs",
+        id: sampleBlog.id,
+        post: "postLike",
+      })
+    )
+    getPostDetail()
+  };
 
+  const getPostDetail = ()=>{
+    dispatch(
+      getBlogStateDetail(id)
+      
+    )
+  }
   return (
     <div
       style={{
@@ -120,32 +138,29 @@ const Detail = () => {
           }}
         >
           <div>
-            <IconButton
-              aria-label="add to favorites"
-  
-              onClick={() => {
-                dispatch(
-                  postBlogState({
-                    axiosToken,
-                    endPoint: "/blogs",
-                    id: sampleBlog.id,
-                    post: "postLike",
-                  })
-                );
-              
-              }}
-            >
-              {sampleBlog.likes.length} <FavoriteIcon sx={{ color: isLiked?.didUserLike ? "red" : "black" }}/>
+            <IconButton aria-label="add to favorites" onClick={handleClickLike}>
+              {sampleBlog.likes.length}{" "}
+              <FavoriteIcon
+                sx={{
+                  color: singleBlog?.isLiked?.didUserLike ? "red" : "black",
+                }}
+              />
             </IconButton>
 
-            <IconButton aria-label="comment">
+            <IconButton
+              aria-label="comment"
+              onClick={() => {
+                setShowComment((comment) => !comment);
+              }}
+            >
               {sampleBlog.comments.length} <InsertCommentOutlinedIcon />
             </IconButton>
           </div>
           <IconButton aria-label="view">
             {sampleBlog.countOfVisitors} <VisibilityIcon />
           </IconButton>
-        </div>
+        </div>{" "}
+        {showComment && <CommentCard />}
       </div>
     </div>
   );
