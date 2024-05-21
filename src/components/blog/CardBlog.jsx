@@ -14,10 +14,11 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {toastWarnNotify} from "../helper/ToastNotify"
+import { toastWarnNotify } from "../helper/ToastNotify";
+
 const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const pageSize = 4;
 
   const extractFirstParagraph = (text) => {
@@ -81,15 +82,18 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
                 <IconButton aria-label="view">
                   {blog.countOfVisitors} <VisibilityIcon />
                 </IconButton>
-                <Button aria-label="show more" sx={{ flexGrow: 1 }}onClick={()=>{
-                  if(user){
-                    navigate(`detail/${blog._id}`)
-                  }
-                  else{
-                    navigate("/login")
-                    toastWarnNotify("You need to be Logged-in to see the details")
-                  }
-                }}>
+                <Button
+                  aria-label="show more"
+                  sx={{ flexGrow: 1 }}
+                  onClick={() => {
+                    if (user) {
+                      navigate(`detail/${blog._id}`);
+                    } else {
+                      navigate("/login");
+                      toastWarnNotify("You need to be Logged-in to see the details");
+                    }
+                  }}
+                >
                   READ MORE
                 </Button>
               </CardActions>
@@ -97,9 +101,10 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={2} sx={{ marginTop: "60px"}}>
+      <Stack spacing={2} sx={{ marginTop: "60px" }}>
         <Pagination
           count={Math.ceil(blogs.length / pageSize)}
+          page={currentPage}  
           onChange={handlePageChange}
           color="primary"
           sx={{
