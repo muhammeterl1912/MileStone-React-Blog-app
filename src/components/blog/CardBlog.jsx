@@ -13,14 +13,16 @@ import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
+import {toastWarnNotify} from "../helper/ToastNotify"
 const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate()
   const pageSize = 4;
 
   const extractFirstParagraph = (text) => {
     const words = text.split(" ");
-    return words.slice(0, 30).join(" ") + (words.length > 100 ? "..." : "");
+    return words.slice(0, 30).join(" ") + (words.length > 30 ? "..." : "");
   };
 
   const handlePageChange = (event, value) => {
@@ -77,9 +79,17 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
                   {blog.comments.length} <InsertCommentOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="view">
-                  {blog.countOfVisitors.length} <VisibilityIcon />
+                  {blog.countOfVisitors} <VisibilityIcon />
                 </IconButton>
-                <Button aria-label="show more" sx={{ flexGrow: 1 }}>
+                <Button aria-label="show more" sx={{ flexGrow: 1 }}onClick={()=>{
+                  if(user){
+                    navigate(`detail/${blog._id}`)
+                  }
+                  else{
+                    navigate("/login")
+                    toastWarnNotify("You need to be Logged-in to see the details")
+                  }
+                }}>
                   READ MORE
                 </Button>
               </CardActions>
@@ -87,9 +97,9 @@ const BlogList = ({ blogs, setCurrentPage, currentPage }) => {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={2} sx={{ marginTop: "20px", marginBottom: "80px" }}>
+      <Stack spacing={2} sx={{ marginTop: "60px"}}>
         <Pagination
-          count={Math.ceil(blogs.length / pageSize)} // Sayfa sayısını hesapla
+          count={Math.ceil(blogs.length / pageSize)}
           onChange={handlePageChange}
           color="primary"
           sx={{

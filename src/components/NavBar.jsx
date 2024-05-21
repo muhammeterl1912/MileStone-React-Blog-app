@@ -43,6 +43,16 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    dispatch(logOutUser({ axiosToken, navigate }));
+    handleCloseUserMenu();
+  };
+
+  const handleMenuItemClick = (url) => {
+    navigate(url);
+    handleCloseNavMenu();
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xxl">
@@ -57,8 +67,8 @@ function NavBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -102,14 +112,14 @@ function NavBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={() => handleMenuItemClick(
+                    page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
+                  )}
+                >
                   <Typography textAlign="center">
-                    <Link
-                      to={page === "DASHBOARD" ? "/" : "/" + page.toLowerCase()}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
-                      {page}
-                    </Link>
+                    {page}
                   </Typography>
                 </MenuItem>
               ))}
@@ -121,8 +131,8 @@ function NavBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -138,14 +148,14 @@ function NavBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link
-                    to={page === "DASHBOARD" ? "/" : "/" + page.toLowerCase()}
-                    style={{ color: "white", textDecoration: "none" }}
-                  >
-                    {page}
-                  </Link>
+              <MenuItem
+                key={page}
+                onClick={() => handleMenuItemClick(
+                  page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
+                )}
+              >
+                <Typography textAlign="center" color="white">
+                  {page}
                 </Typography>
               </MenuItem>
             ))}
@@ -178,12 +188,7 @@ function NavBar() {
                   <MenuItem
                     key={setting}
                     onClick={
-                      setting === "Log-out"
-                        ? () => {
-                            dispatch(logOutUser({ axiosToken, navigate }));
-                            handleCloseUserMenu();
-                          }
-                        : handleCloseUserMenu
+                      setting === "Log-out" ? handleLogout : handleCloseUserMenu
                     }
                   >
                     <Typography textAlign="center">{setting}</Typography>

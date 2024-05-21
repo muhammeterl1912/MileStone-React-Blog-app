@@ -6,27 +6,24 @@ import blogsReducer from "../components/features/blogsSlice";
 import commentsReducer from "../components/features/commentsSlice";
 import categoriesReducer from "../components/features/categoriesSlice";
 
-const persistConfig = {
+const authPersistConfig = {
   key: "root",
   storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedBlogsReducer = persistReducer(persistConfig, blogsReducer);
-const persistedCommentsReducer = persistReducer(persistConfig, commentsReducer);
-const persistedCategoriesReducer = persistReducer(persistConfig, categoriesReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
-    blogs: persistedBlogsReducer,
-    comments: persistedCommentsReducer,
-    categories: persistedCategoriesReducer,
+    blogs: blogsReducer,
+    comments: commentsReducer,
+    categories: categoriesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["persist/PERSIST"],
+        ignoredActions: ["FLUSH", "REHYDRATE", "PAUSE", "PERSIST", "PURGE", "REGISTER"],
       },
     }),
   devTools: process.env.NODE_ENV !== "production",
