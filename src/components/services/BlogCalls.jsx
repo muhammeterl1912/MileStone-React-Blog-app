@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../libs/axios"
+import {axiosToken}from "../../libs/axios"
 
 const endpoint = {
   blogs:"blogs?page=",
@@ -14,7 +14,7 @@ export const getBlogState = createAsyncThunk(
   async ({currentPage},{rejectWithValue}) => {
     console.log(currentPage,"weweeeid")
     try {
-      const { data } = await axios.get(endpoint.blogs +currentPage+"&limit=4");
+      const { data } = await axiosToken.get(endpoint.blogs +currentPage+"&limit=4");
 console.log(data.data)
       return data;
     } catch (error) {
@@ -26,7 +26,7 @@ export const getBlogStateDetail = createAsyncThunk(
   "details/getBlogs",
   async (  id ,{rejectWithValue}) => {
     try {
-      const { data } = await axios.get(endpoint.blogDetail + id);
+      const { data } = await axiosToken.get(endpoint.blogDetail + id);
 console.log(data.data)
       return data.data;
     } catch (error) {

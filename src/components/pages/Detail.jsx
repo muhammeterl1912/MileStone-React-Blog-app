@@ -18,7 +18,7 @@ const Detail = () => {
   const [showComment, setShowComment] = useState(false);
   const dispatch = useDispatch();
   const { singleBlog, isLiked } = useSelector((state) => state.blogs);
-  console.log(isLiked?.didUserLike);
+
   useEffect(() => {
     getPostDetail()
   }, [id]);

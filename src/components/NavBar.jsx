@@ -14,7 +14,7 @@ import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "./services/authLogout";
-import useAxios from "./services/useAxios";
+
 
 const pages = ["DASHBOARD", "NEWBLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
@@ -24,7 +24,7 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { axiosToken } = useAxios();
+;
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -44,7 +44,7 @@ function NavBar() {
   };
 
   const handleLogout = () => {
-    dispatch(logOutUser({ axiosToken, navigate }));
+    dispatch(logOutUser({  navigate }));
     handleCloseUserMenu();
   };
 
