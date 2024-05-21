@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBlogState } from "../services/BlogCalls";
+import { getBlogState, postBlogState } from "../services/BlogCalls";
 
 const initialState = {
   blogs: [],
   singleBlog: null,
+  isLiked: null,
   loading: false,
   error: false,
 };
@@ -21,17 +22,28 @@ const blogsSlice = createSlice({
       .addCase(getBlogState.fulfilled, (state, { payload }) => {
         state.loading = false;
         if (Array.isArray(payload)) {
-          state.loading = false;
           state.blogs = payload;
           state.singleBlog = null;
         } else {
-          state.loading = false;
           state.singleBlog = payload;
           state.blogs = [];
         }
         state.error = false;
       })
       .addCase(getBlogState.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(postBlogState.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(postBlogState.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = false;
+        state.isLiked = payload
+      })
+      .addCase(postBlogState.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
