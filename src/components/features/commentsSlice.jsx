@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCommentsState } from "../services/BlogCalls";
+import { getSingleCommentsState} from "../services/BlogCalls";
 
 const initialState = {
   comments: [],
+  singleBlogComment:null,
   loading: false,
   error: false,
 };
@@ -13,16 +14,17 @@ const commentsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getCommentsState.pending, (state) => {
+      .addCase(getSingleCommentsState.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
-      .addCase(getCommentsState.fulfilled, (state, { payload }) => {
+      .addCase(getSingleCommentsState.fulfilled, (state, { payload }) => {
+        console.log(payload,"commentnete")
         state.loading = false;
-        state.comments = payload; 
+        state.singleBlogComment = payload; 
         state.error = false;
       })
-      .addCase(getCommentsState.rejected, (state) => {
+      .addCase(getSingleCommentsState.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });

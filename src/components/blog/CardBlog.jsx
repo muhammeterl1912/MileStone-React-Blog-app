@@ -13,17 +13,18 @@ import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toastWarnNotify } from "../helper/ToastNotify";
 import { useDispatch } from "react-redux";
-import { postBlogLike, } from "../services/BlogCalls";
+import { postBlogLike } from "../services/BlogCalls";
+import Detail from "../pages/Detail";
 
-const BlogList = ({ blogs, totalPage, currentPage,isLiked }) => {
+const BlogList = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-console.log(blogs)
+
   const extractFirstParagraph = (text) => {
     const words = text.split(" ");
     return words.slice(0, 30).join(" ") + (words.length > 30 ? "..." : "");
@@ -34,7 +35,6 @@ console.log(blogs)
   };
   const handleClickLike = (id) => {
     dispatch(postBlogLike(id));
- 
   };
 
   return (
@@ -77,12 +77,11 @@ console.log(blogs)
               >
                 <IconButton
                   aria-label="add to favorites"
-                 
                   onClick={() => {
                     handleClickLike(blog._id);
                   }}
                 >
-                  {blog.likes.length} <FavoriteIcon  sx={{ color: isLiked?.didUserLike ? "red" : "black" }} />
+                  {blog.likes.length} <FavoriteIcon />
                 </IconButton>
                 <IconButton aria-label="comment">
                   {blog.comments.length} <InsertCommentOutlinedIcon />
@@ -90,22 +89,18 @@ console.log(blogs)
                 <IconButton aria-label="view">
                   {blog.countOfVisitors} <VisibilityIcon />
                 </IconButton>
+       
                 <Button
-                  aria-label="show more"
-                  sx={{ flexGrow: 1 }}
-                  onClick={() => {
-                    if (user) {
-                      navigate(`detail/${blog._id}`);
-                    } else {
-                      navigate("/login");
-                      toastWarnNotify(
-                        "You need to be Logged-in to see the details"
-                      );
-                    }
-                  }}
-                >
-                  READ MORE
-                </Button>
+  aria-label="show more"
+  sx={{ flexGrow: 1 }}
+  component={Link}
+  to={user ? { pathname: `/detail/${blog._id}`, state: { handleClickLike } } : "/login"}
+>
+  READ MORE
+</Button>
+
+
+
               </CardActions>
             </Card>
           </Grid>

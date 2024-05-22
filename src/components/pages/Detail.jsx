@@ -1,26 +1,24 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useParams } from "react-router-dom";
-
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
-import { postBlogState, getBlogStateDetail } from "../services/BlogCalls";
+import { getBlogStateDetail, postBlogLike } from "../services/BlogCalls";
 import CommentCard from "../blog/CommentCard";
+
 const Detail = () => {
   const { id } = useParams();
-
   const [showComment, setShowComment] = useState(false);
   const dispatch = useDispatch();
-  const { singleBlog,} = useSelector((state) => state.blogs);
+  const { singleBlog, isLiked } = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    getPostDetail()
-  }, [id]);
+    getPostDetail();
+  }, [id, isLiked]);
 
   const sampleBlog = {
     id: singleBlog?._id,
@@ -41,23 +39,15 @@ const Detail = () => {
     firstName: singleBlog?.userId ? singleBlog?.userId.firstName : "Unknown",
     lastName: singleBlog?.userId ? singleBlog?.userId.lastName : "Unknown",
   };
-  const handleClickLike = () => {
-    dispatch(
-      postBlogState({
-       
-        id: sampleBlog.id,
-        post: "postLike",
-      })
-    )
-    getPostDetail()
+
+  const handleClickLike = (id) => {
+    dispatch(postBlogLike(id));
   };
 
-  const getPostDetail = ()=>{
-    dispatch(
-      getBlogStateDetail(id)
-      
-    )
-  }
+  const getPostDetail = () => {
+    dispatch(getBlogStateDetail(id));
+  };
+
   return (
     <div
       style={{
@@ -92,8 +82,7 @@ const Detail = () => {
             alt="Author Avatar"
             src={""}
             style={{ marginRight: "10px" }}
-          />{" "}
-          {/* Avatar */}
+          />
           <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
             {sampleBlog.title}
           </Typography>
@@ -136,12 +125,16 @@ const Detail = () => {
           }}
         >
           <div>
-            <IconButton aria-label="add to favorites" onClick={handleClickLike}>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => handleClickLike(sampleBlog.id)}
+            >
               {sampleBlog.likes.length}{" "}
               <FavoriteIcon
-                sx={{
-                  color:"black",
-                }}
+             sx={{
+  color: isLiked?.didUserLike ? "red" : "black"
+}}
+
               />
             </IconButton>
 

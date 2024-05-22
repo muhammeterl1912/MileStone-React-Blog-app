@@ -33,17 +33,17 @@ export const getBlogStateDetail = createAsyncThunk(
     }
   }
 );
-export const getCommentsState = createAsyncThunk(
+export const getSingleCommentsState = createAsyncThunk(
   "comments/getComments",
-  async ({ axiosToken, endPoint, id }, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      let url = `${endPoint}`;
+      let url = `${ endpoint.blogDetail}`;
       if (id) {
         url += `/${id}`;
       }
       const { data } = await axiosToken.get(url);
 
-      return data.data;
+      return data.data.comments;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }

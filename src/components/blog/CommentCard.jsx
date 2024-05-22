@@ -3,19 +3,21 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { useDispatch } from "react-redux";
-import { getCommentsState } from "../services/BlogCalls";
-import { useSelector } from "react-redux";
-import useAxios from "../services/useAxios";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getSingleCommentsState } from "../services/BlogCalls";
+
 const CommentCard = () => {
   const [comment, setComment] = useState("");
-
-const dispatch = useDispatch()
-const {axiosToken} = useAxios()
-const { comments } = useSelector((state) => state.comments);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { singleBlogComment, loading } = useSelector((state) => state.comments);
+  console.log(singleBlogComment, "qwqqqqq");
   useEffect(() => {
-    dispatch(getCommentsState({ axiosToken, endPoint: 'comments', id: '' }));
-  }, []); 
+    if (id) {
+      dispatch(getSingleCommentsState(id));
+    }
+  }, [dispatch, id]);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -23,24 +25,40 @@ const { comments } = useSelector((state) => state.comments);
 
   const handleSubmitComment = () => {
     if (comment.trim() !== "") {
-  
-    setComment("");
+      setComment("");
     }
   };
+
+  if (loading) {
+    return <Typography>Loading comments...</Typography>;
+  }
 
   return (
     <div>
       <Typography variant="h5" gutterBottom>
         Comments
       </Typography>
-      {/* {comments.map((comment, index) => (
-        <div key={index}>
-          <Typography variant="body1" gutterBottom>
-            {comment}
-          </Typography>
-          <Divider />
-        </div>
-      ))} */}
+      {singleBlogComment && singleBlogComment.length > 0 ? (
+        singleBlogComment.map((commentData) => {
+          console.log("döngü", commentData);
+          return (
+            <div key={commentData._id}>
+              <Typography variant="body1" gutterBottom>
+                {commentData.comment}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                By {commentData.userId.username} on{" "}
+                {new Date(commentData.createdAt).toLocaleString()}
+              </Typography>
+              <Divider />
+            </div>
+          );
+        })
+      ) : (
+        <Typography variant="body2" color="textSecondary">
+          No comments yet.
+        </Typography>
+      )}
       <TextField
         label="Add a comment"
         multiline
@@ -52,7 +70,7 @@ const { comments } = useSelector((state) => state.comments);
         margin="normal"
       />
       <Button variant="contained" color="primary" onClick={handleSubmitComment}>
-      ADD COMMENT 
+        ADD COMMENT
       </Button>
     </div>
   );
