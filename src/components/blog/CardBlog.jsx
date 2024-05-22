@@ -15,25 +15,28 @@ import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toastWarnNotify } from "../helper/ToastNotify";
+import { useDispatch } from "react-redux";
+import { postBlogLike, } from "../services/BlogCalls";
 
-const BlogList = ({ blogs, totalPage, currentPage }) => {
-  const { user } = useSelector((state) => state.auth)
+const BlogList = ({ blogs, totalPage, currentPage,isLiked }) => {
+  const { user } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-
+console.log(blogs)
   const extractFirstParagraph = (text) => {
     const words = text.split(" ");
     return words.slice(0, 30).join(" ") + (words.length > 30 ? "..." : "");
   };
 
   const handlePageChange = (event, value) => {
-  
-    navigate(`/?page=${value}`)
-    
+    navigate(`/?page=${value}`);
+  };
+  const handleClickLike = (id) => {
+    dispatch(postBlogLike(id));
+ 
   };
 
- 
   return (
     <>
       <Grid
@@ -41,8 +44,8 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
         spacing={1}
         sx={{ maxWidth: "1800px", justifyContent: "center" }}
       >
-        {blogs.map((blog) => (
-          <Grid item key={blog.id} xs={12} md={6} xl={3}>
+        {blogs?.map((blog) => (
+          <Grid item key={blog} xs={12} md={6} xl={3}>
             <Card
               sx={{
                 maxWidth: 345,
@@ -72,8 +75,14 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                 disableSpacing
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                <IconButton aria-label="add to favorites">
-                  {blog.likes.length} <FavoriteIcon />
+                <IconButton
+                  aria-label="add to favorites"
+                 
+                  onClick={() => {
+                    handleClickLike(blog._id);
+                  }}
+                >
+                  {blog.likes.length} <FavoriteIcon  sx={{ color: isLiked?.didUserLike ? "red" : "black" }} />
                 </IconButton>
                 <IconButton aria-label="comment">
                   {blog.comments.length} <InsertCommentOutlinedIcon />
@@ -89,7 +98,9 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                       navigate(`detail/${blog._id}`);
                     } else {
                       navigate("/login");
-                      toastWarnNotify("You need to be Logged-in to see the details");
+                      toastWarnNotify(
+                        "You need to be Logged-in to see the details"
+                      );
                     }
                   }}
                 >
@@ -100,22 +111,20 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
           </Grid>
         ))}
       </Grid>
-    {
-      totalPage > 1 &&(
+      {totalPage > 1 && (
         <Stack spacing={2} sx={{ marginTop: "60px" }}>
-        <Pagination
-          count={+totalPage}
-          page={+currentPage}  
-          onChange={handlePageChange}
-          color="primary"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        />
-      </Stack>
-      )
-    }
+          <Pagination
+            count={+totalPage}
+            page={+currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          />
+        </Stack>
+      )}
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBlogState, postBlogState,getBlogStateDetail } from "../services/BlogCalls";
+import { getBlogState,getBlogStateDetail,postBlogLike } from "../services/BlogCalls";
 
 const initialState = {
   blogs: [],
@@ -30,16 +30,17 @@ const blogsSlice = createSlice({
         state.loading = false;
         state.error = true;
       })
-      .addCase(postBlogState.pending, (state) => {
+      .addCase(postBlogLike.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
-      .addCase(postBlogState.fulfilled, (state, { payload }) => {
+      .addCase(postBlogLike.fulfilled, (state, { payload }) => {
+    
         state.loading = false;
         state.error = false;
         state.isLiked = payload
       })
-      .addCase(postBlogState.rejected, (state) => {
+      .addCase(postBlogLike.rejected, (state) => {
         state.loading = false;
         state.error = true;
       })

@@ -1,21 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {axiosToken}from "../../libs/axios"
+import { axiosToken } from "../../libs/axios";
 
 const endpoint = {
-  blogs:"blogs?page=",
-  comments:"comments/",
-  blogDetail:"blogs/"
-}
-
-
+  blogs: "blogs?page=",
+  comments: "comments/",
+  blogDetail: "blogs/",
+};
 
 export const getBlogState = createAsyncThunk(
   "blogs/getBlogs",
-  async ({currentPage},{rejectWithValue}) => {
-    console.log(currentPage,"weweeeid")
+  async ({ currentPage }, { rejectWithValue }) => {
     try {
-      const { data } = await axiosToken.get(endpoint.blogs +currentPage+"&limit=4");
-console.log(data.data)
+      const { data } = await axiosToken.get(
+        endpoint.blogs + currentPage + "&limit=4"
+      );
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -24,10 +23,10 @@ console.log(data.data)
 );
 export const getBlogStateDetail = createAsyncThunk(
   "details/getBlogs",
-  async (  id ,{rejectWithValue}) => {
+  async (id, { rejectWithValue }) => {
     try {
       const { data } = await axiosToken.get(endpoint.blogDetail + id);
-console.log(data.data)
+
       return data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -39,14 +38,25 @@ export const getCommentsState = createAsyncThunk(
   async ({ axiosToken, endPoint, id }, thunkAPI) => {
     try {
       let url = `${endPoint}`;
-      if (id) { 
+      if (id) {
         url += `/${id}`;
       }
       const { data } = await axiosToken.get(url);
-      
+
       return data.data;
     } catch (error) {
-      console.log('Error message:', error.message);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const postBlogLike = createAsyncThunk(
+  "blogs/postBlogLike",
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await axiosToken.post(`${endpoint.blogDetail}/${id}/postLike`);
+  
+      return data;
+    } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -54,17 +64,14 @@ export const getCommentsState = createAsyncThunk(
 
 
 export const postBlogState = createAsyncThunk(
-  'blogs/postBlogs',
-  async ({ axiosToken, endPoint, id, post }, thunkAPI) => {
+  "blogs/postBlogs",
+  async ({id, post}, thunkAPI) => {
     try {
-      
-      
-      const url = `${endPoint}/${id}/${post}`;
+      const url = `/${id}/${post}`;
       const { data } = await axiosToken.post(url);
 
-      return data.data;
+      return data;
     } catch (error) {
-      console.log(error.message);
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }

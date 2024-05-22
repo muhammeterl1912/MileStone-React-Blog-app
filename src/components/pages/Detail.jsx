@@ -5,8 +5,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useParams } from "react-router-dom";
-import useAxios from "../services/useAxios";
-import { getBlogState } from "../services/BlogCalls";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
@@ -14,10 +13,10 @@ import { postBlogState, getBlogStateDetail } from "../services/BlogCalls";
 import CommentCard from "../blog/CommentCard";
 const Detail = () => {
   const { id } = useParams();
-  const { axiosToken } = useAxios();
+
   const [showComment, setShowComment] = useState(false);
   const dispatch = useDispatch();
-  const { singleBlog, isLiked } = useSelector((state) => state.blogs);
+  const { singleBlog,} = useSelector((state) => state.blogs);
 
   useEffect(() => {
     getPostDetail()
@@ -45,8 +44,7 @@ const Detail = () => {
   const handleClickLike = () => {
     dispatch(
       postBlogState({
-        axiosToken,
-        endPoint: "/blogs",
+       
         id: sampleBlog.id,
         post: "postLike",
       })
@@ -142,7 +140,7 @@ const Detail = () => {
               {sampleBlog.likes.length}{" "}
               <FavoriteIcon
                 sx={{
-                  color: singleBlog?.isLiked?.didUserLike ? "red" : "black",
+                  color:"black",
                 }}
               />
             </IconButton>
@@ -159,7 +157,7 @@ const Detail = () => {
           <IconButton aria-label="view">
             {sampleBlog.countOfVisitors} <VisibilityIcon />
           </IconButton>
-        </div>{" "}
+        </div>
         {showComment && <CommentCard />}
       </div>
     </div>

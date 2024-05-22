@@ -27,7 +27,7 @@ const { comments } = useSelector((state) => state.comments);
     setComment("");
     }
   };
-  console.log(comments)
+
   return (
     <div>
       <Typography variant="h5" gutterBottom>
