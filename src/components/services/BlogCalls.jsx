@@ -5,6 +5,7 @@ const endpoint = {
   blogs: "blogs?page=",
   comments: "comments/",
   blogDetail: "blogs/",
+  categories: "categories/",
 };
 
 export const getBlogState = createAsyncThunk(
@@ -64,19 +65,6 @@ export const postBlogLike = createAsyncThunk(
   }
 );
 
-export const postBlogState = createAsyncThunk(
-  "blogs/postBlogs",
-  async ({ id, post }, thunkAPI) => {
-    try {
-      const url = `/${id}${post}`;
-      const { data } = await axiosToken.post(url);
-
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
 export const postBlogComment = createAsyncThunk(
   "comments/postComment",
   async (postComment, thunkAPI) => {
@@ -84,6 +72,31 @@ export const postBlogComment = createAsyncThunk(
       const data = await axiosToken.post(endpoint.comments, postComment);
 
       return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const getBlogCategories = createAsyncThunk(
+  "categories/getCategories",
+  async (_, thunkAPI) => {
+    try {
+      const data = await axiosToken(endpoint.categories);
+
+      return data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const postBlogState = createAsyncThunk(
+  "blogs/postBlog",
+  async (postData, thunkAPI) => {
+    try {
+   
+      const { data } = await axiosToken.post(endpoint.blogDetail,postData);
+
+      return data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
