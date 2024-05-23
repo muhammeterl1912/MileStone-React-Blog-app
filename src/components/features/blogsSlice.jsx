@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBlogState,getBlogStateDetail,postBlogLike,postBlogState  } from "../services/BlogCalls";
+import { getBlogState,getBlogStateDetail,postBlogLike,postBlogState} from "../services/BlogCalls";
 
 const initialState = {
   blogs: [],
@@ -63,9 +63,10 @@ const blogsSlice = createSlice({
         state.error = false;
       })
       .addCase(postBlogState.fulfilled, (state, { payload }) => {
+        console.log(payload,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
         state.loading = false;
         state.error = false;
-        state.postedBlog = payload.data
+        state.postedBlog.push(payload)
       })
       .addCase(postBlogState.rejected, (state) => {
         state.loading = false;

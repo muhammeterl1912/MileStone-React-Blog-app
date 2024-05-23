@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
+import { applyMiddleware } from "redux";
 import authReducer from "../components/features/authSlice";
 import blogsReducer from "../components/features/blogsSlice";
 import commentsReducer from "../components/features/commentsSlice";
@@ -13,13 +15,15 @@ const authPersistConfig = {
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
+const rootReducer = combineReducers({
+  auth: persistedAuthReducer,
+  blogs: blogsReducer,
+  comments: commentsReducer,
+  categories: categoriesReducer,
+});
+
 const store = configureStore({
-  reducer: {
-    auth: persistedAuthReducer,
-    blogs: blogsReducer,
-    comments: commentsReducer,
-    categories: categoriesReducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

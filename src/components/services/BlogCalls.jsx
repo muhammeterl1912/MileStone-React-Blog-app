@@ -10,18 +10,16 @@ const endpoint = {
 
 export const getBlogState = createAsyncThunk(
   "blogs/getBlogs",
-  async ({ currentPage }, { rejectWithValue }) => {
+  async ({ endPoint, currentPage, paginate }, { rejectWithValue }) => {
     try {
-      const { data } = await axiosToken.get(
-        endpoint.blogs + currentPage + "&limit=4"
-      );
-
+      const { data } = await axiosToken.get(`${endPoint}${currentPage}${paginate}`);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 export const getBlogStateDetail = createAsyncThunk(
   "details/getBlogs",
   async (id, { rejectWithValue }) => {
@@ -90,7 +88,7 @@ export const getBlogCategories = createAsyncThunk(
   }
 );
 export const postBlogState = createAsyncThunk(
-  "blogs/postBlog",
+  "blogs/postBlogNew",
   async (postData, thunkAPI) => {
     try {
    

@@ -25,6 +25,7 @@ function BlogForm() {
     isPublish: "",
   });
   const { categories } = useSelector((state) => state.categories);
+  const { postedBlog } = useSelector((state) => state.blogs);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,12 +40,13 @@ function BlogForm() {
     }));
   };
 
-  console.log(formData);
+  useEffect(() => {
+ 
+  }, [postedBlog]); 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await dispatch(postBlogState(formData));
+   dispatch(postBlogState(formData));
       toastSuccessNotify("Blog successfully created");
       setFormData({
         categoryId: "",
@@ -53,9 +55,7 @@ function BlogForm() {
         image: "",
         isPublish: "",
       });
-    } catch (error) {
-      console.error("There was an error creating the blog!", error);
-    }
+
   };
 
   return (

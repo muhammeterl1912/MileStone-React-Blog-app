@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import PrivateRouter from "./PrivateRouter";
 import UpdateModal from "../blog/UpdateModal";
 import NewBlog from "../pages/NewBlog";
+import UserBlogs from "../pages/UserBlogs"
 const AppRouter = () => {
   return (
     <Router>
@@ -31,6 +32,9 @@ const AppRouter = () => {
         </Route>
         <Route path="/newblog" element={<PrivateRouter />}>
           <Route path="" element={<NewBlog/>} />
+        </Route>
+        <Route path="/my-blogs" element={<PrivateRouter />}>
+          <Route path="" element={<UserBlogs/>} />
         </Route>
       </Routes>
       <FooTer />

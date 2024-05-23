@@ -19,7 +19,7 @@ const Detail = () => {
 
   useEffect(() => {
     getPostDetail();
-  }, [id, isLiked]);
+  }, [isLiked]);
 
   const getPostDetail = () => {
     dispatch(getBlogStateDetail(id));
@@ -39,130 +39,136 @@ const Detail = () => {
     comments: singleBlog?.comments || [],
     likes: singleBlog?.likes || [],
     countOfVisitors: singleBlog?.countOfVisitors || [],
-    createdAt: singleBlog ? new Date(singleBlog.createdAt).toLocaleString() : "",
-    updatedAt: singleBlog ? new Date(singleBlog.updatedAt).toLocaleString() : "",
+    createdAt: singleBlog
+      ? new Date(singleBlog.createdAt).toLocaleString()
+      : "",
+    updatedAt: singleBlog
+      ? new Date(singleBlog.updatedAt).toLocaleString()
+      : "",
     firstName: singleBlog?.userId ? singleBlog.userId.firstName : "Unknown",
     lastName: singleBlog?.userId ? singleBlog.userId.lastName : "Unknown",
   };
 
-  return (
-    loading ? (
+  return loading ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
+      }}
+    >
+      <img
+        src={LoadingGif}
+        alt="Loading..."
+        style={{ width: "100px", height: "100px" }}
+      />
+    </div>
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        padding: "50px",
+        alignItems: "center",
+        minHeight: "80vh",
+        marginBottom: "100px",
+        background: "#f9f9f9",
+      }}
+    >
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <img src={LoadingGif} alt="Loading..." style={{ width: "100px", height: "100px" }} />
-      </div>
-    ) : (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "50px",
-          alignItems: "center",
-          minHeight: "80vh",
-          marginBottom: "100px",
-          background: "#f9f9f9",
+          width: "100%",
+          maxWidth: 800,
+          margin: "20px",
+          padding: "40px",
+          borderRadius: "8px",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+          background: "white",
         }}
       >
         <div
           style={{
-            width: "100%",
-            maxWidth: 800,
-            margin: "20px",
-            padding: "40px",
-            borderRadius: "8px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-            background: "white",
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "20px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <Avatar
-              alt="Author Avatar"
-              src={sampleBlog.userId?.avatar || ""}
-              style={{ marginRight: "10px" }}
-            />
-            <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
-              {sampleBlog.title}
-            </Typography>
-          </div>
-          <img
-            src={sampleBlog.image}
-            alt="Blog image"
-            style={{
-              height: 300,
-              width: "100%",
-              objectFit: "cover",
-              borderRadius: "8px 8px 0 0",
-              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-            }}
+          <Avatar
+            alt="Author Avatar"
+            src={sampleBlog.userId?.avatar || ""}
+            style={{ marginRight: "10px" }}
           />
-          <div style={{ marginTop: "20px" }}>
-            <Typography variant="body1" color="textSecondary">
-              {sampleBlog.content}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              style={{ marginTop: "10px", fontStyle: "italic" }}
-            >
-              Publish Date: {sampleBlog.createdAt}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              style={{ marginTop: "10px", fontStyle: "italic" }}
-            >
-              Author: {`${sampleBlog.firstName} ${sampleBlog.lastName}`}
-            </Typography>
-          </div>
-          <div
-            style={{
-              marginTop: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
+          <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
+            {sampleBlog.title}
+          </Typography>
+        </div>
+        <img
+          src={sampleBlog.image}
+          alt="Blog image"
+          style={{
+            height: 300,
+            width: "100%",
+            objectFit: "cover",
+            borderRadius: "8px 8px 0 0",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+          }}
+        />
+        <div style={{ marginTop: "20px" }}>
+          <Typography variant="body1" color="textSecondary">
+            {sampleBlog.content}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            style={{ marginTop: "10px", fontStyle: "italic" }}
           >
-            <div>
-              <IconButton
-                aria-label="add to favorites"
-                onClick={() => handleClickLike(sampleBlog.id)}
-              >
-                {sampleBlog.likes.length}{" "}
-                <FavoriteIcon
-                  sx={{
-                    color: isLiked?.didUserLike ? "red" : "black",
-                  }}
-                />
-              </IconButton>
-
-              <IconButton
-                aria-label="comment"
-                onClick={() => {
-                  setShowComment((prev) => !prev);
+            Publish Date: {sampleBlog.createdAt}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            style={{ marginTop: "10px", fontStyle: "italic" }}
+          >
+            Author: {`${sampleBlog.firstName} ${sampleBlog.lastName}`}
+          </Typography>
+        </div>
+        <div
+          style={{
+            marginTop: "20px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => handleClickLike(sampleBlog.id)}
+            >
+              {sampleBlog.likes.length}{" "}
+              <FavoriteIcon
+                sx={{
+                  color: isLiked?.didUserLike ? "red" : "black",
                 }}
-              >
-                {sampleBlog.comments.length} <InsertCommentOutlinedIcon />
-              </IconButton>
-            </div>
-            <IconButton aria-label="view">
-              {sampleBlog.countOfVisitors} <VisibilityIcon />
+              />
+            </IconButton>
+
+            <IconButton
+              aria-label="comment"
+              onClick={() => {
+                setShowComment((prev) => !prev);
+              }}
+            >
+              {sampleBlog.comments.length} <InsertCommentOutlinedIcon />
             </IconButton>
           </div>
-          {showComment && <CommentCard />}
+          <IconButton aria-label="view">
+            {sampleBlog.countOfVisitors} <VisibilityIcon />
+          </IconButton>
         </div>
+        {showComment && <CommentCard />}
       </div>
-    )
+    </div>
   );
 };
 

@@ -16,7 +16,7 @@ const categoriesSlice = createSlice({
         state.error = false;
       })
       .addCase(getBlogCategories.fulfilled, (state, { payload }) => {
-        console.log(payload.data)
+    
         state.loading = false;
         state.categories = payload.data
         state.error = false;

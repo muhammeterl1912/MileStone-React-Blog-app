@@ -15,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "./services/authLogout";
 
-
 const pages = ["DASHBOARD", "NEWBLOG", "ABOUT"];
 const settings = ["My Blogs", "Profile", "Log-out"];
 
@@ -24,7 +23,6 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-;
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -44,7 +42,7 @@ function NavBar() {
   };
 
   const handleLogout = () => {
-    dispatch(logOutUser({  navigate }));
+    dispatch(logOutUser({ navigate }));
     handleCloseUserMenu();
   };
 
@@ -111,16 +109,16 @@ function NavBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page, index) => (
                 <MenuItem
-                  key={page}
-                  onClick={() => handleMenuItemClick(
-                    page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
-                  )}
+                  key={`${page}-${index}`}
+                  onClick={() =>
+                    handleMenuItemClick(
+                      page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
+                    )
+                  }
                 >
-                  <Typography textAlign="center">
-                    {page}
-                  </Typography>
+                  <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -147,12 +145,14 @@ function NavBar() {
             EROL
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <MenuItem
-                key={page}
-                onClick={() => handleMenuItemClick(
-                  page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
-                )}
+                key={`${page}-${index}`}
+                onClick={() =>
+                  handleMenuItemClick(
+                    page === "DASHBOARD" ? "/" : `/${page.toLowerCase()}`
+                  )
+                }
               >
                 <Typography textAlign="center" color="white">
                   {page}
@@ -184,11 +184,15 @@ function NavBar() {
               onClose={handleCloseUserMenu}
             >
               {user ? (
-                settings.map((setting) => (
+                settings.map((setting, index) => (
                   <MenuItem
-                    key={setting}
-                    onClick={
-                      setting === "Log-out" ? handleLogout : handleCloseUserMenu
+                    key={`${setting}-${index}`}
+                    onClick={() =>
+                      setting === "Log-out"
+                        ? handleLogout()
+                        : setting === "My Blogs"
+                        ? navigate("/my-blogs")
+                        : handleCloseUserMenu()
                     }
                   >
                     <Typography textAlign="center">{setting}</Typography>

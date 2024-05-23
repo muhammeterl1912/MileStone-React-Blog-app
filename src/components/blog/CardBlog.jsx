@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toastWarnNotify } from "../helper/ToastNotify";
 import { useDispatch } from "react-redux";
 import { postBlogLike } from "../services/BlogCalls";
-import Detail from "../pages/Detail";
+
 
 const BlogList = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);

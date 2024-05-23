@@ -10,14 +10,15 @@ const Dashboard = () => {
   const params = useLocation()?.search?.split("page=")[1]
   const [currentPage, setCurrentPage] = useState(params ?? 1);
   const dispatch = useDispatch();
-  const { blogs,totalPage, loading,isLiked,postedBlog } = useSelector((state) => state.blogs);
+  const { blogs,totalPage, loading,isLiked,} = useSelector((state) => state.blogs);
 
-console.log(postedBlog,"qqqqqqqqqqqqqq")
   useEffect(() => {
-    dispatch(
-      getBlogState({  currentPage })
-    );
-  }, [currentPage,isLiked]);
+    dispatch(getBlogState({
+      endPoint: "blogs?page=",
+      currentPage: currentPage,
+      paginate: "&limit=4"
+    }));
+  }, [dispatch,currentPage,isLiked]);
 
 
 useEffect(()=>{
