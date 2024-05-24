@@ -16,7 +16,7 @@ import { postBlogLike } from "../services/BlogCalls";
 import { useEffect, useState } from "react";
 import { getBlogState, deleteSingleBlog } from "../services/BlogCalls";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
-
+import NewBlog from "./NewBlog"
 const BlogList = () => {
   const { user } = useSelector((state) => state.auth);
   const [filteredData, setFilteredData] = useState(null);
@@ -151,7 +151,7 @@ const BlogList = () => {
           align="center"
           sx={{ marginTop: 4, marginBottom: 4 }}
         >
-          No Data.You need to publish Post...
+          No Data.You need to publish a Blog...
         </Typography>
       )}
     </>

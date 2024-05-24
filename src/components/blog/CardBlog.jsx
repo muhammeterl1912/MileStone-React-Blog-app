@@ -12,16 +12,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { toastWarnNotify } from "../helper/ToastNotify";
-import { useDispatch } from "react-redux";
 import { postBlogLike } from "../services/BlogCalls";
-
 
 const BlogList = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
-
+  const [likeColor, setLikeColor] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,9 +30,16 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
   const handlePageChange = (event, value) => {
     navigate(`/?page=${value}`);
   };
+
   const handleClickLike = (id) => {
     dispatch(postBlogLike(id));
   };
+
+  React.useEffect(() => {
+    if (user) {
+      setLikeColor(blogs.map(blog => blog.likes.includes(user._id)));
+    }
+  }, []);
 
   return (
     <>
@@ -44,7 +48,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
         spacing={1}
         sx={{ maxWidth: "1800px", justifyContent: "center" }}
       >
-        {blogs?.map((blog) => (
+        {blogs?.map((blog, index) => (
           <Grid item key={blog} xs={12} md={6} xl={3}>
             <Card
               sx={{
@@ -77,11 +81,10 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
               >
                 <IconButton
                   aria-label="add to favorites"
-                  onClick={() => {
-                    handleClickLike(blog._id);
-                  }}
+                  onClick={() => handleClickLike(blog._id)}
                 >
-                  {blog.likes.length} <FavoriteIcon />
+                  {blog.likes.length}
+                  <FavoriteIcon sx={{ color: likeColor[index] ? "red" : "black" }} />
                 </IconButton>
                 <IconButton aria-label="comment">
                   {blog.comments.length} <InsertCommentOutlinedIcon />
@@ -89,18 +92,14 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                 <IconButton aria-label="view">
                   {blog.countOfVisitors} <VisibilityIcon />
                 </IconButton>
-       
                 <Button
-  aria-label="show more"
-  sx={{ flexGrow: 1 }}
-  component={Link}
-  to={user ? { pathname: `/detail/${blog._id}`, state: { handleClickLike } } : "/login"}
->
-  READ MORE
-</Button>
-
-
-
+                  aria-label="show more"
+                  sx={{ flexGrow: 1 }}
+                  component={Link}
+                  to={user ? { pathname: `/detail/${blog._id}`, state: { handleClickLike } } : "/login"}
+                >
+                  READ MORE
+                </Button>
               </CardActions>
             </Card>
           </Grid>
@@ -113,10 +112,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
             page={+currentPage}
             onChange={handlePageChange}
             color="primary"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
+            sx={{ display: "flex", justifyContent: "center" }}
           />
         </Stack>
       )}

@@ -7,27 +7,28 @@ import LoadingSkeleton from "../blog/LoadingSkeleton";
 import { useLocation } from "react-router-dom";
 
 const Dashboard = () => {
-  const params = useLocation()?.search?.split("page=")[1]
+  const params = useLocation()?.search?.split("page=")[1];
   const [currentPage, setCurrentPage] = useState(params ?? 1);
   const dispatch = useDispatch();
-  const { blogs,totalPage, loading,isLiked,} = useSelector((state) => state.blogs);
+  const { blogs, totalPage, loading, isLiked } = useSelector(
+    (state) => state.blogs
+  );
 
   useEffect(() => {
-    dispatch(getBlogState({
-      endPoint: "blogs?page=",
-      currentPage: currentPage,
-      paginate: "&limit=4"
-    }));
-  }, [dispatch,currentPage,isLiked]);
+    dispatch(
+      getBlogState({
+        endPoint: "blogs?page=",
+        currentPage: currentPage,
+        paginate: "&limit=4",
+      })
+    );
+  }, [currentPage, isLiked?.didUserLike]);
 
-
-useEffect(()=>{
-  setCurrentPage(params ?? 1)
-},[params])
-
+  useEffect(() => {
+    setCurrentPage(params ?? 1);
+  }, [params]);
 
   return (
-
     <div>
       {loading ? (
         <LoadingSkeleton />

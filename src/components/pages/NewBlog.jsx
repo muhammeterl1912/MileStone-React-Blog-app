@@ -72,7 +72,7 @@ function BlogForm() {
           <ImportContactsIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          NEW BLOG
+       ADD   NEW BLOG
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           <TextField

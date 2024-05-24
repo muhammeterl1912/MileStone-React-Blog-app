@@ -14,19 +14,29 @@ import LoadingGif from "../../assets/Loading.gif";
 const Detail = () => {
   const { id } = useParams();
   const [showComment, setShowComment] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const [likeColor, setLikeColor] = useState(false);
   const dispatch = useDispatch();
-  const { singleBlog, isLiked, loading } = useSelector((state) => state.blogs);
+  const { singleBlog, loading } = useSelector((state) => state.blogs);
 
   useEffect(() => {
     getPostDetail();
-  }, [isLiked]);
+  }, []);
+
+  useEffect(() => {
+    if (singleBlog) {
+      setLikeColor(singleBlog.likes.includes(user?._id)); // Fixed the comparison
+    }
+  }, [singleBlog]);
 
   const getPostDetail = () => {
     dispatch(getBlogStateDetail(id));
   };
 
-  const handleClickLike = (id) => {
-    dispatch(postBlogLike(id));
+  const handleClickLike = () => {
+    dispatch(postBlogLike(singleBlog?._id)); 
+    setLikeColor(!likeColor);
+    getPostDetail();
   };
 
   const sampleBlog = {
@@ -141,16 +151,9 @@ const Detail = () => {
           }}
         >
           <div>
-            <IconButton
-              aria-label="add to favorites"
-              onClick={() => handleClickLike(sampleBlog.id)}
-            >
-              {sampleBlog.likes.length}{" "}
-              <FavoriteIcon
-                sx={{
-                  color: isLiked?.didUserLike ? "red" : "black",
-                }}
-              />
+            <IconButton aria-label="add to favorites" onClick={handleClickLike}>
+              <FavoriteIcon sx={{ color: likeColor ? "red" : "black" }} />
+              {sampleBlog.likes.length}
             </IconButton>
 
             <IconButton
