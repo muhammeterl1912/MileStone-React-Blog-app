@@ -13,14 +13,18 @@ import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { postBlogLike } from "../services/BlogCalls";
-import { useEffect, useState } from "react";
-import { getBlogState, deleteSingleBlog } from "../services/BlogCalls";
+import { useEffect } from "react";
+import {
+
+  deleteSingleBlog,
+  getUserBlogs,
+} from "../services/BlogCalls";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
-import NewBlog from "./NewBlog"
+
 const BlogList = () => {
   const { user } = useSelector((state) => state.auth);
-  const [filteredData, setFilteredData] = useState(null);
-  const { blogs, loading, isLiked } = useSelector((state) => state.blogs);
+
+  const { postedBlog, loading, isLiked } = useSelector((state) => state.blogs);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,29 +42,26 @@ const BlogList = () => {
 
   const handleDeleteClick = (id) => {
     dispatch(deleteSingleBlog(id));
-    dispatch(getBlogState({ endPoint: "/blogs", currentPage: "", paginate: "" }));
+    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
   };
 
   useEffect(() => {
-    dispatch(getBlogState({ endPoint: "/blogs", currentPage: "", paginate: "" }));
+    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
   }, [dispatch, isLiked]);
 
-  useEffect(() => {
-    const filtered = blogs?.filter((item) => item.userId === user._id);
-    setFilteredData(filtered);
-  }, [blogs]);
+  console.log(postedBlog, "postedd");
 
   return (
     <>
       {loading ? (
         <LoadingSkeleton />
-      ) : filteredData && filteredData.length ? (
+      ) : postedBlog && postedBlog.length ? (
         <Grid
           container
           spacing={4}
           sx={{ justifyContent: "center", marginTop: 2, marginBottom: 4 }}
         >
-          {filteredData.map((blog) => (
+          {postedBlog.map((blog) => (
             <Grid
               item
               key={blog._id}

@@ -1,12 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBlogState,getBlogStateDetail,postBlogLike,postBlogState,deleteSingleBlog} from "../services/BlogCalls";
+import {
+  getBlogState,
+  getBlogStateDetail,
+  postBlogLike,
+  postBlogState,
+  deleteSingleBlog,
+  getUserBlogs,
+} from "../services/BlogCalls";
 
 const initialState = {
   blogs: [],
-  postedBlog:[],
+  postedBlog: [],
   singleBlog: null,
-  deletedBlog:null,
-  totalPage:1,
+  deletedBlog: null,
+  totalPage: 1,
   isLiked: null,
   loading: false,
   error: false,
@@ -24,8 +31,7 @@ const blogsSlice = createSlice({
       })
       .addCase(getBlogState.fulfilled, (state, { payload }) => {
         state.loading = false;
-    
-        state.totalPage = payload.details.pages.total
+        state.totalPage = payload.details.pages.total;
         state.blogs = payload.data;
         state.error = false;
       })
@@ -38,10 +44,9 @@ const blogsSlice = createSlice({
         state.error = false;
       })
       .addCase(postBlogLike.fulfilled, (state, { payload }) => {
-    
         state.loading = false;
         state.error = false;
-        state.isLiked = payload
+        state.isLiked = payload;
       })
       .addCase(postBlogLike.rejected, (state) => {
         state.loading = false;
@@ -54,7 +59,7 @@ const blogsSlice = createSlice({
       .addCase(getBlogStateDetail.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = false;
-        state.singleBlog = payload
+        state.singleBlog = payload;
       })
       .addCase(getBlogStateDetail.rejected, (state) => {
         state.loading = false;
@@ -65,20 +70,32 @@ const blogsSlice = createSlice({
         state.error = false;
       })
       .addCase(postBlogState.fulfilled, (state, { payload }) => {
-
         state.loading = false;
         state.error = false;
-        state.postedBlog.push(payload)
+        state.postedBlog.push(payload);
       })
       .addCase(postBlogState.rejected, (state) => {
         state.loading = false;
         state.error = true;
-      }).addCase(deleteSingleBlog.fulfilled, (state, { payload }) => {
-
+      })
+      .addCase(deleteSingleBlog.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = false;
-        state.deletedBlog=payload
+        state.deletedBlog = payload;
       })
+      .addCase(getUserBlogs.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(getUserBlogs.fulfilled, (state, { payload }) => {
+        state.loading = false;
+  state.postedBlog = payload.data;
+        state.error = false;
+      })
+      .addCase(getUserBlogs.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
   },
 });
 

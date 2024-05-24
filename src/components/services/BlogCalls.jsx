@@ -113,3 +113,14 @@ export const deleteSingleBlog = createAsyncThunk(
     }
   }
 );
+export const getUserBlogs = createAsyncThunk(
+  "blogs/getUserBlogs",
+  async (endpoint, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosToken.get(endpoint);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
