@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBlogState,getBlogStateDetail,postBlogLike,postBlogState} from "../services/BlogCalls";
+import { getBlogState,getBlogStateDetail,postBlogLike,postBlogState,deleteSingleBlog} from "../services/BlogCalls";
 
 const initialState = {
   blogs: [],
   postedBlog:[],
   singleBlog: null,
+  deletedBlog:null,
   totalPage:1,
   isLiked: null,
   loading: false,
@@ -23,6 +24,7 @@ const blogsSlice = createSlice({
       })
       .addCase(getBlogState.fulfilled, (state, { payload }) => {
         state.loading = false;
+    
         state.totalPage = payload.details.pages.total
         state.blogs = payload.data;
         state.error = false;
@@ -63,7 +65,7 @@ const blogsSlice = createSlice({
         state.error = false;
       })
       .addCase(postBlogState.fulfilled, (state, { payload }) => {
-        console.log(payload,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+
         state.loading = false;
         state.error = false;
         state.postedBlog.push(payload)
@@ -71,6 +73,11 @@ const blogsSlice = createSlice({
       .addCase(postBlogState.rejected, (state) => {
         state.loading = false;
         state.error = true;
+      }).addCase(deleteSingleBlog.fulfilled, (state, { payload }) => {
+
+        state.loading = false;
+        state.error = false;
+        state.deletedBlog=payload
       })
   },
 });

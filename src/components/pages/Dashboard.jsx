@@ -26,7 +26,6 @@ useEffect(()=>{
 },[params])
 
 
-
   return (
 
     <div>

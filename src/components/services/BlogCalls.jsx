@@ -100,3 +100,16 @@ export const postBlogState = createAsyncThunk(
     }
   }
 );
+export const deleteSingleBlog = createAsyncThunk(
+  "blogs/deleteSingleBlog",
+  async (id, thunkAPI) => {
+    try {
+   
+      const  data  = await axiosToken.delete(endpoint.blogDetail+id);
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);

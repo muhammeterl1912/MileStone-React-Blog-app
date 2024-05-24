@@ -14,13 +14,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { postBlogLike } from "../services/BlogCalls";
 import { useEffect, useState } from "react";
-import { getBlogState } from "../services/BlogCalls";
+import { getBlogState, deleteSingleBlog } from "../services/BlogCalls";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
 
 const BlogList = () => {
   const { user } = useSelector((state) => state.auth);
   const [filteredData, setFilteredData] = useState(null);
-  const { blogs, loading,isLiked } = useSelector((state) => state.blogs);
+  const { blogs, loading, isLiked } = useSelector((state) => state.blogs);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,34 +34,33 @@ const BlogList = () => {
     dispatch(postBlogLike(id));
   };
 
-  const handleEditClick = (id) => {
-  
-  };
+  const handleEditClick = (id) => {};
 
   const handleDeleteClick = (id) => {
-
+    dispatch(deleteSingleBlog(id));
+    dispatch(getBlogState({ endPoint: "/blogs", currentPage: "", paginate: "" }));
   };
 
   useEffect(() => {
     dispatch(getBlogState({ endPoint: "/blogs", currentPage: "", paginate: "" }));
-  }, [dispatch,isLiked]);
+  }, [dispatch, isLiked]);
 
   useEffect(() => {
     const filtered = blogs?.filter((item) => item.userId === user._id);
     setFilteredData(filtered);
-  }, [blogs,isLiked]);
+  }, [blogs]);
 
   return (
     <>
       {loading ? (
         <LoadingSkeleton />
-      ) : (
+      ) : filteredData && filteredData.length ? (
         <Grid
           container
           spacing={4}
           sx={{ justifyContent: "center", marginTop: 2, marginBottom: 4 }}
         >
-          {filteredData?.map((blog) => (
+          {filteredData.map((blog) => (
             <Grid
               item
               key={blog._id}
@@ -70,7 +69,9 @@ const BlogList = () => {
               md={4}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <Card sx={{ maxWidth: 345, height: "100%", boxShadow: 3, margin: 2 }}>
+              <Card
+                sx={{ maxWidth: 345, height: "100%", boxShadow: 3, margin: 2 }}
+              >
                 <CardMedia
                   component="img"
                   height="194"
@@ -89,7 +90,8 @@ const BlogList = () => {
                     color="text.secondary"
                     sx={{ marginTop: 1 }}
                   >
-                    Publish Date: {new Date(blog.createdAt).toLocaleString()}
+                    Publish Date:
+                    {new Date(blog.createdAt).toLocaleString()}
                   </Typography>
                 </CardContent>
                 <CardActions
@@ -132,7 +134,7 @@ const BlogList = () => {
                   </Button>
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    color="warning"
                     size="small"
                     onClick={() => handleDeleteClick(blog._id)}
                   >
@@ -143,6 +145,14 @@ const BlogList = () => {
             </Grid>
           ))}
         </Grid>
+      ) : (
+        <Typography
+          variant="h5"
+          align="center"
+          sx={{ marginTop: 4, marginBottom: 4 }}
+        >
+          No Data.You need to publish Post...
+        </Typography>
       )}
     </>
   );
