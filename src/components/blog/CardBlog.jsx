@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postBlogLike } from "../services/BlogCalls";
-
+import {toastWarnNotify} from "../helper/ToastNotify"
 const BlogList = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
   const [likeColor, setLikeColor] = React.useState(false);
@@ -86,7 +86,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                   {blog.likes.length}
                   <FavoriteIcon sx={{ color: likeColor[index] ? "red" : "black" }} />
                 </IconButton>
-                <IconButton aria-label="comment">
+                <IconButton aria-label="comment"onClick={()=>toastWarnNotify("Please Navigate to Detail to see the Comments or add comment... ")}>
                   {blog.comments.length} <InsertCommentOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="view">

@@ -6,6 +6,7 @@ import {
   postBlogState,
   deleteSingleBlog,
   getUserBlogs,
+  putUpdateBlogs,
 } from "../services/BlogCalls";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   deletedBlog: null,
   totalPage: 1,
   isLiked: null,
+  updatedBlog:null,
   loading: false,
   error: false,
 };
@@ -93,6 +95,18 @@ const blogsSlice = createSlice({
         state.error = false;
       })
       .addCase(getUserBlogs.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      }).addCase(putUpdateBlogs.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(putUpdateBlogs.fulfilled, (state, { payload }) => {
+        state.loading = false;
+  state.updatedBlog = payload.data;
+        state.error = false;
+      })
+      .addCase(putUpdateBlogs.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });

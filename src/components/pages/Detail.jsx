@@ -25,7 +25,7 @@ const Detail = () => {
 
   useEffect(() => {
     if (singleBlog) {
-      setLikeColor(singleBlog.likes.includes(user?._id)); // Fixed the comparison
+      setLikeColor(singleBlog.likes.includes(user?._id));
     }
   }, [singleBlog]);
 
@@ -34,7 +34,7 @@ const Detail = () => {
   };
 
   const handleClickLike = () => {
-    dispatch(postBlogLike(singleBlog?._id)); 
+    dispatch(postBlogLike(singleBlog?._id));
     setLikeColor(!likeColor);
     getPostDetail();
   };

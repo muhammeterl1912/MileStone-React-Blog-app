@@ -124,3 +124,14 @@ export const getUserBlogs = createAsyncThunk(
     }
   }
 );
+export const putUpdateBlogs = createAsyncThunk(
+  "blogs/putUpdateBlogs",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosToken.put(`/blogs/${id}`, formData);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

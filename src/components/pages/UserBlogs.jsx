@@ -14,14 +14,18 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { postBlogLike } from "../services/BlogCalls";
 import { useEffect } from "react";
-import {
-
-  deleteSingleBlog,
-  getUserBlogs,
-} from "../services/BlogCalls";
+import { deleteSingleBlog, getUserBlogs } from "../services/BlogCalls";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
+import UpdateModal from "../blog/UpdateModal";
 
-const BlogList = () => {
+const UserBlogs = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
+  };
+
   const { user } = useSelector((state) => state.auth);
 
   const { postedBlog, loading, isLiked } = useSelector((state) => state.blogs);
@@ -38,8 +42,6 @@ const BlogList = () => {
     dispatch(postBlogLike(id));
   };
 
-  const handleEditClick = (id) => {};
-
   const handleDeleteClick = (id) => {
     dispatch(deleteSingleBlog(id));
     dispatch(getUserBlogs(`/blogs?author=${user._id}`));
@@ -48,8 +50,6 @@ const BlogList = () => {
   useEffect(() => {
     dispatch(getUserBlogs(`/blogs?author=${user._id}`));
   }, [dispatch, isLiked]);
-
-  console.log(postedBlog, "postedd");
 
   return (
     <>
@@ -129,7 +129,7 @@ const BlogList = () => {
                     variant="outlined"
                     color="primary"
                     size="small"
-                    onClick={() => handleEditClick(blog._id)}
+                    onClick={() => handleOpen()}
                   >
                     Edit
                   </Button>
@@ -143,6 +143,14 @@ const BlogList = () => {
                   </Button>
                 </CardActions>
               </Card>
+              {open && (
+                <UpdateModal
+                  open={open}
+                  setOpen={setOpen}
+                  handleClose={handleClose}
+                  blog={blog}
+                />
+              )}
             </Grid>
           ))}
         </Grid>
@@ -159,4 +167,4 @@ const BlogList = () => {
   );
 };
 
-export default BlogList;
+export default UserBlogs;
