@@ -59,6 +59,8 @@ const Detail = () => {
     lastName: singleBlog?.userId ? singleBlog.userId.lastName : "Unknown",
   };
 
+  console.log(sampleBlog)
+
   return loading ? (
     <div
       style={{
@@ -106,7 +108,7 @@ const Detail = () => {
         >
           <Avatar
             alt="Author Avatar"
-            src={sampleBlog.userId?.avatar || ""}
+            src={user?.image|| ""}
             style={{ marginRight: "10px" }}
           />
           <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
