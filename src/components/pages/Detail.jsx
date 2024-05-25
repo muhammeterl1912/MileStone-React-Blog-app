@@ -36,7 +36,6 @@ const Detail = () => {
   const handleClickLike = () => {
     dispatch(postBlogLike(singleBlog?._id));
     setLikeColor(!likeColor);
-    getPostDetail();
   };
 
   const sampleBlog = {
@@ -58,7 +57,6 @@ const Detail = () => {
     firstName: singleBlog?.userId ? singleBlog.userId.firstName : "Unknown",
     lastName: singleBlog?.userId ? singleBlog.userId.lastName : "Unknown",
   };
-
 
   return loading ? (
     <div

@@ -9,12 +9,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     height: "90vh",
+    padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      height: "auto",
+    },
   },
   card: {
-    width: "50%",
+    width: "100%",
+    maxWidth: "600px",
     backgroundColor: "#ffffff",
     borderRadius: theme.spacing(2),
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
   avatar: {
     width: theme.spacing(10),
@@ -26,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: theme.spacing(4),
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(2),
+    },
   },
   paragraph: {
     marginBottom: theme.spacing(2),
