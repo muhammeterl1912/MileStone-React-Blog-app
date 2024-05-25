@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { postBlogLike } from "../services/BlogCalls";
 import { toastWarnNotify } from "../helper/ToastNotify";
 
-const BlogList = ({ blogs, totalPage, currentPage }) => {
+const CardBlog = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
   const [likeColor, setLikeColor] = React.useState(false);
   const dispatch = useDispatch();
@@ -130,4 +130,4 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
   );
 };
 
-export default BlogList;
+export default CardBlog;

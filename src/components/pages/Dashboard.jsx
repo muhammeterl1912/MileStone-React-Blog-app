@@ -22,7 +22,7 @@ const Dashboard = () => {
         paginate: "&limit=4",
       })
     );
-  }, [currentPage, isLiked?.didUserLike]);
+  }, [currentPage,isLiked]);
 
   useEffect(() => {
     setCurrentPage(params ?? 1);

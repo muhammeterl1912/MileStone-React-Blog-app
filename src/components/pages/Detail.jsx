@@ -17,11 +17,11 @@ const Detail = () => {
   const { user } = useSelector((state) => state.auth);
   const [likeColor, setLikeColor] = useState(false);
   const dispatch = useDispatch();
-  const { singleBlog, loading } = useSelector((state) => state.blogs);
+  const { singleBlog, loading, isLiked } = useSelector((state) => state.blogs);
 
   useEffect(() => {
     getPostDetail();
-  }, []);
+  }, [isLiked]);
 
   useEffect(() => {
     if (singleBlog) {
@@ -59,7 +59,6 @@ const Detail = () => {
     lastName: singleBlog?.userId ? singleBlog.userId.lastName : "Unknown",
   };
 
-  console.log(sampleBlog)
 
   return loading ? (
     <div
@@ -108,7 +107,7 @@ const Detail = () => {
         >
           <Avatar
             alt="Author Avatar"
-            src={user?.image|| ""}
+            src={user?.image || ""}
             style={{ marginRight: "10px" }}
           />
           <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
