@@ -7,33 +7,29 @@ import { useParams } from "react-router-dom";
 import { getSingleCommentsState } from "../services/BlogCalls";
 
 const CommentCard = () => {
-
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleBlogComment, loading,postedComment } = useSelector((state) => state.comments);
+  const { singleBlogComment, loading, postedComment } = useSelector((state) => state.comments);
 
   useEffect(() => {
     if (id) {
       dispatch(getSingleCommentsState(id));
     }
-  }, [dispatch, id,postedComment ]);
-
-
+  }, [dispatch, id, postedComment]);
 
   if (loading) {
     return <Typography>Loading comments...</Typography>;
   }
 
   return (
-    <div>
+    <div style={{ marginTop: "20px", padding: "20px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
       <Typography variant="h5" gutterBottom>
         Comments
       </Typography>
       {singleBlogComment && singleBlogComment.length > 0 ? (
         singleBlogComment.map((commentData) => {
-       
           return (
-            <div key={commentData._id}>
+            <div key={commentData._id} style={{ marginBottom: "15px" }}>
               <Typography variant="body1" gutterBottom>
                 {commentData.comment}
               </Typography>
@@ -50,7 +46,7 @@ const CommentCard = () => {
           No comments yet.
         </Typography>
       )}
-<CommentForm id={id }/>
+      <CommentForm id={id} />
     </div>
   );
 };
