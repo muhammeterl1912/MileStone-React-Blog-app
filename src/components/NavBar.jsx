@@ -192,6 +192,8 @@ function NavBar() {
                         ? handleLogout()
                         : setting === "My Blogs"
                         ? navigate("/my-blogs")
+                        : setting === "Profile"
+                        ? navigate("/profile")
                         : handleCloseUserMenu()
                     }
                   >
@@ -205,7 +207,7 @@ function NavBar() {
                     handleCloseUserMenu();
                   }}
                 >
-                  <Typography textAlign="center">Log-in</Typography>
+                  <Typography textAlign="center">Login</Typography>
                 </MenuItem>
               )}
             </Menu>
