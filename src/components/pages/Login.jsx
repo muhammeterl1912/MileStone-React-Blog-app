@@ -9,6 +9,8 @@ import LoginForm from "../auth/LoginForm";
 const Login = () => {
   return (
     <Container maxWidth="lg">
+      <h4>USERNAME:test1912</h4>
+      <h4>PASSWORD:Testaccount12@</h4>
       <Grid
         container
         justifyContent="center"
@@ -28,7 +30,7 @@ const Login = () => {
               height: 40,
             }}
           >
-            <LockIcon size="30"/>
+            <LockIcon size="30" />
           </Avatar>
           <Typography
             variant="h4"
@@ -38,7 +40,7 @@ const Login = () => {
           >
             Login
           </Typography>
-<LoginForm/>
+          <LoginForm />
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Do you not have an account?</Link>
           </Box>

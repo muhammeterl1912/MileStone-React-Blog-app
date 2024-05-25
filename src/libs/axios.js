@@ -1,17 +1,19 @@
 import axios from "axios";
 
+const axiosToken = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+});
 
-const token = localStorage.getItem("token")
+axiosToken.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Token ${token}`;
+  }
+  return config;
+});
 
+export { axiosToken };
 
-export const axiosToken = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}`,
-    headers: { Authorization: `Token ${token}` },
-  })
-
-
- export const axiosPublic = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  });
-
-
+export const axiosPublic = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+});

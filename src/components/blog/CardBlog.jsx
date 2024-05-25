@@ -82,11 +82,13 @@ const CardBlog = ({ blogs, totalPage, currentPage }) => {
               >
                 <IconButton
                   aria-label="add to favorites"
-                  onClick={() => handleClickLike(blog._id)}
+                  onClick={() =>
+                    user ? handleClickLike(blog._id) : navigate("login")
+                  }
                 >
                   {blog.likes.length}
                   <FavoriteIcon
-                    sx={{ color: likeColor[index] ? "red" : "black" }}
+                    sx={{ color: likeColor[index] ? user && "red" : "black" }}
                   />
                 </IconButton>
                 <IconButton
