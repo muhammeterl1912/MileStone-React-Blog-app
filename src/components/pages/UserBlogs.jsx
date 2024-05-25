@@ -81,7 +81,7 @@ const UserBlogs = () => {
         <Grid
           container
           spacing={4}
-          sx={{ justifyContent: "center", marginTop: 2, marginBottom: 4 }}
+          sx={{ justifyContent: "center", marginTop: 2, marginBottom: "100px" }}
         >
           {postedBlog.map((blog) => (
             <Grid
