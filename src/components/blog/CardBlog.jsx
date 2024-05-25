@@ -15,7 +15,8 @@ import Stack from "@mui/material/Stack";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postBlogLike } from "../services/BlogCalls";
-import {toastWarnNotify} from "../helper/ToastNotify"
+import { toastWarnNotify } from "../helper/ToastNotify";
+
 const BlogList = ({ blogs, totalPage, currentPage }) => {
   const { user } = useSelector((state) => state.auth);
   const [likeColor, setLikeColor] = React.useState(false);
@@ -37,7 +38,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
 
   React.useEffect(() => {
     if (user) {
-      setLikeColor(blogs.map(blog => blog.likes.includes(user._id)));
+      setLikeColor(blogs.map((blog) => blog.likes.includes(user._id)));
     }
   }, []);
 
@@ -49,7 +50,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
         sx={{ maxWidth: "1800px", justifyContent: "center" }}
       >
         {blogs?.map((blog, index) => (
-          <Grid item key={blog} xs={12} md={6} xl={3}>
+          <Grid item key={blog._id} xs={12} md={6} xl={3}>
             <Card
               sx={{
                 maxWidth: 345,
@@ -84,9 +85,18 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                   onClick={() => handleClickLike(blog._id)}
                 >
                   {blog.likes.length}
-                  <FavoriteIcon sx={{ color: likeColor[index] ? "red" : "black" }} />
+                  <FavoriteIcon
+                    sx={{ color: likeColor[index] ? "red" : "black" }}
+                  />
                 </IconButton>
-                <IconButton aria-label="comment"onClick={()=>toastWarnNotify("Please Navigate to Detail to see the Comments or add comment... ")}>
+                <IconButton
+                  aria-label="comment"
+                  onClick={() =>
+                    toastWarnNotify(
+                      "Please Navigate to Detail to see the Comments or add comment... "
+                    )
+                  }
+                >
                   {blog.comments.length} <InsertCommentOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="view">
@@ -96,7 +106,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
                   aria-label="show more"
                   sx={{ flexGrow: 1 }}
                   component={Link}
-                  to={user ? { pathname: `/detail/${blog._id}`, state: { handleClickLike } } : "/login"}
+                  to={user ? `/detail/${blog._id}` : "/login"}
                 >
                   READ MORE
                 </Button>
@@ -106,7 +116,7 @@ const BlogList = ({ blogs, totalPage, currentPage }) => {
         ))}
       </Grid>
       {totalPage > 1 && (
-        <Stack spacing={2} sx={{ marginTop: "60px" }}>
+        <Stack spacing={2} sx={{ marginTop: "60px", paddingBottom: "65px" }}>
           <Pagination
             count={+totalPage}
             page={+currentPage}
