@@ -8,7 +8,7 @@ function Footer() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
       <Box sx={{ flexGrow: 1 }}></Box>
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+      <AppBar  color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
           <Box>
             <IconButton 

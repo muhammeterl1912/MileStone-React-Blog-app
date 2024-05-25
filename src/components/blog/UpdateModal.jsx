@@ -11,29 +11,19 @@ import {
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { toastSuccessNotify } from "../helper/ToastNotify";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogCategories, putUpdateBlogs, } from "../services/BlogCalls";
+import { getBlogCategories } from "../services/BlogCalls";
 
-export default function UpdateModal({ open, handleClose, blog }) {
-  const [formData, setFormData] = useState({
-    categoryId: "",
-    title: "",
-    content: "",
-    image: "",
-    isPublish: false,
-  });
-
+export default function UpdateModal({
+  open,
+  handleClose,
+  blog,
+  handleEditClick,
+  formData,
+  setFormData,
+}) {
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
-
-  const handleEditClick = (e) => {
-    e.preventDefault();
-    dispatch(putUpdateBlogs({ id: blog._id, formData }));
-    toastSuccessNotify("Blog successfully updated.");
-   
-    handleClose();
-  };
 
   useEffect(() => {
     if (open) {
@@ -46,7 +36,7 @@ export default function UpdateModal({ open, handleClose, blog }) {
         isPublish: blog.isPublish || false,
       });
     }
-  }, [dispatch]);
+  }, [open, dispatch, setFormData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

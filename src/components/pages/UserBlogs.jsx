@@ -12,26 +12,48 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
-import { postBlogLike } from "../services/BlogCalls";
-import { useEffect } from "react";
-import { deleteSingleBlog, getUserBlogs } from "../services/BlogCalls";
+import {
+  postBlogLike,
+  deleteSingleBlog,
+  getUserBlogs,
+  putUpdateBlogs,
+} from "../services/BlogCalls";
+import { useEffect, useState } from "react";
 import LoadingSkeleton from "../blog/LoadingSkeleton";
 import UpdateModal from "../blog/UpdateModal";
 
 const UserBlogs = () => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
-  };
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    categoryId: "",
+    title: "",
+    content: "",
+    image: "",
+    isPublish: false,
+  });
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   const { user } = useSelector((state) => state.auth);
-
   const { postedBlog, loading, isLiked } = useSelector((state) => state.blogs);
-
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const handleOpen = (blog) => {
+    setSelectedBlog(blog);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedBlog(null);
+  };
+
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    dispatch(putUpdateBlogs({ id: selectedBlog._id, formData }));
+
+    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
+    handleClose();
+  };
 
   const extractFirstParagraph = (text) => {
     const words = text.split(" ");
@@ -91,8 +113,7 @@ const UserBlogs = () => {
                     color="text.secondary"
                     sx={{ marginTop: 1 }}
                   >
-                    Publish Date:
-                    {new Date(blog.createdAt).toLocaleString()}
+                    Publish Date: {new Date(blog.createdAt).toLocaleString()}
                   </Typography>
                 </CardContent>
                 <CardActions
@@ -129,7 +150,7 @@ const UserBlogs = () => {
                     variant="outlined"
                     color="primary"
                     size="small"
-                    onClick={() => handleOpen()}
+                    onClick={() => handleOpen(blog)}
                   >
                     Edit
                   </Button>
@@ -143,14 +164,6 @@ const UserBlogs = () => {
                   </Button>
                 </CardActions>
               </Card>
-              {open && (
-                <UpdateModal
-                  open={open}
-                  setOpen={setOpen}
-                  handleClose={handleClose}
-                  blog={blog}
-                />
-              )}
             </Grid>
           ))}
         </Grid>
@@ -160,8 +173,18 @@ const UserBlogs = () => {
           align="center"
           sx={{ marginTop: 4, marginBottom: 4 }}
         >
-          No Data.You need to publish a Blog...
+          No Data. You need to publish a Blog...
         </Typography>
+      )}
+      {selectedBlog && (
+        <UpdateModal
+          open={open}
+          handleClose={handleClose}
+          blog={selectedBlog}
+          handleEditClick={handleEditClick}
+          formData={formData}
+          setFormData={setFormData}
+        />
       )}
     </>
   );
