@@ -34,7 +34,8 @@ const UserBlogs = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   const { user } = useSelector((state) => state.auth);
-  const { postedBlog, loading, isLiked } = useSelector((state) => state.blogs);
+  const { postedBlog, loading, isLiked, updatedBlog, deletedBlog } =
+    useSelector((state) => state.blogs);
   const dispatch = useDispatch();
 
   const handleOpen = (blog) => {
@@ -66,12 +67,11 @@ const UserBlogs = () => {
 
   const handleDeleteClick = (id) => {
     dispatch(deleteSingleBlog(id));
-    dispatch(getUserBlogs(`/blogs?author=${user._id}`));
   };
 
   useEffect(() => {
     dispatch(getUserBlogs(`/blogs?author=${user._id}`));
-  }, [dispatch, isLiked]);
+  }, [dispatch, isLiked, updatedBlog, deletedBlog]);
 
   return (
     <>
