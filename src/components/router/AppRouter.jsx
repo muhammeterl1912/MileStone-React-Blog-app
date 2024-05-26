@@ -11,6 +11,7 @@ import PrivateRouter from "./PrivateRouter";
 import UpdateModal from "../blog/UpdateModal";
 import NewBlog from "../pages/NewBlog";
 import UserBlogs from "../pages/UserBlogs"
+import NotFound from "../pages/NotFound";
 const AppRouter = () => {
   return (
     <Router>
@@ -36,6 +37,7 @@ const AppRouter = () => {
         <Route path="/my-blogs" element={<PrivateRouter />}>
           <Route path="" element={<UserBlogs/>} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <FooTer />
     </Router>
