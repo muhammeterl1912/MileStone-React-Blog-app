@@ -4,7 +4,7 @@
 
 ![chrome-capture-2024-5-26](https://github.com/muhammeterl1912/MileStone-React-Blog-app/assets/118777871/48884834-91ab-439f-9c44-be807878596b)
 
-The React Blog App is a web application that allows users to register, log in, and create blog posts. Users can view, like, comment on, edit, and delete their own posts. This project demonstrates user authentication, CRUD operations, and interactivity with a blog application.
+The React Blog App is one of my biggest and milestone projects. It is a web application that allows users to register, log in, and create blog posts. Users can view, like, comment on, edit, and delete their own posts. This project demonstrates user authentication, CRUD operations, and interactivity with a blog application.
 
 ## Features
 
